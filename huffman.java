@@ -1,9 +1,6 @@
 import java.io.*;
 import java.util.*;
 
-
-//plan:
-//1) create hashmap with letter as keys and frequency as value
 public class huffman {
     public static void main(String[] args) {
         String filePath = "test/msgspec.txt";  // path to demo file (change as needed for different files)
@@ -22,7 +19,7 @@ public class huffman {
             System.out.println("error check the file path");
         }
 
-        
+
         // Print frequency table to terminal
         System.out.println("Frequency table:");
         for (Map.Entry<Character, Integer> entry : frequencyTable.entrySet()) {
