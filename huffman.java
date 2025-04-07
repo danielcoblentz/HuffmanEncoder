@@ -82,6 +82,11 @@ public class huffman {
         String encodedData = encodeFile(filePath, huffmanCodes);
         System.out.println("\nencoded message:");
         System.out.println(encodedData);
+
+        //print decoded message to user:
+        String decodedData = decodeMessage(encodedData, root);
+        System.out.println("\ndecoded message:");
+        System.out.println(decodedData);
     }
 
 
@@ -120,5 +125,37 @@ public class huffman {
         }
         encoded.append(huffmanCodes.get('+'));
         return encoded.toString();
+    }
+
+    //decode method part 3:
+    public static String decodeMessage(String encodedData, Node root) {
+        StringBuilder decoded = new StringBuilder();
+        Node current = root;
+
+        for (int i = 0; i < encodedData.length(); i++) {
+            char bit = encodedData.charAt(i);
+            current = (bit == '0') ? current.left : current.right;
+
+            if (current.isLeaf()) {
+                char ch = current.ch;
+
+                // if we encounter a  + that marks end of message
+                if (ch == '+') {
+                    break;
+                }
+                // reverse the transformations
+                if (ch == '-') {
+                    decoded.append(' ');
+                } else if (ch == '!') {
+                    decoded.append('\n');
+                } else {
+                    decoded.append(ch);
+                }
+                current = root;
+            }
+        }
+
+
+        return decoded.toString();
     }
 }
