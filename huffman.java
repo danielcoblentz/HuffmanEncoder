@@ -27,7 +27,9 @@ public class huffman {
     public static void main(String[] args) {
         //part 1: build frequency table
         String filePath = "test/filetoencode.txt";  // path to input file(change this as needed for testing other inputs)
-
+        
+        File originalFile = new File(filePath);
+        long originalSize = originalFile.length();
         // Build frequency table
         Map<Character, Integer> frequencyTable = new HashMap<>();
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
@@ -83,13 +85,23 @@ public class huffman {
         System.out.println("\nencoded message:");
         System.out.println(encodedData);
 
+
         //print decoded message to user:
         String decodedData = decodeMessage(encodedData, root);
         System.out.println("\ndecoded message:");
         System.out.println(decodedData);
+
+        int encodedBits = encodedData.length();
+        int encodedBytes = (int) Math.ceil(encodedBits / 8.0);
+
+        System.out.println("\n Compression Stats:");
+        System.out.println("Original file size: " + originalSize + " bytes");
+        System.out.println("Encoded size: " + encodedBytes + " bytes (" + encodedBits + " bits)");
+        double compressionRatio = (double) encodedBytes / originalSize;
+        System.out.printf("Compression ratio: %.2f\n", compressionRatio);
+
+        
     }
-
-
 
     // helper function to recursively build the code table
     public static void generateCodes(Node node, String code, Map<Character, String> huffmanCodes) {
@@ -127,7 +139,7 @@ public class huffman {
         return encoded.toString();
     }
 
-    //decode method part 3:
+    //decode encoded message method part 3:
     public static String decodeMessage(String encodedData, Node root) {
         StringBuilder decoded = new StringBuilder();
         Node current = root;
